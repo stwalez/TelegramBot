@@ -1,5 +1,5 @@
 
-@token = 1030271986:AAEVlVieyhuzJH2ICe-3ZQOtHRRtpBCzZOo
+@token = {{telegramtoken}}
 GET https://api.telegram.org/bot{{token}}/getMe
 
 ###
