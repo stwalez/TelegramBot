@@ -12,6 +12,54 @@ const bot = new TelegramBot(token, {
 const URLs = [];
 const URLLabels = [];
 let tempSiteURL = '';
+const contactnumber = {
+    firstname: "Molly",
+    lastname: "Sanders",
+    number: "+234 701 122 3344"
+}
+let clientname = '';
+
+// Listener (handler) for Greetings
+bot.on('message', (msg) => {
+    let clientmsg = ["hello", "hi", "heyy", "hey",];
+    let contactmsg = ["my phone contact"];
+    let bye = "bye";
+    //console.log(msg);
+    if (!msg.text.charAt(0).includes("/")) {
+        if (!msg.reply_to_message || !msg.reply_to_message.text.includes("Hi, What's your name")) {
+            
+            if (clientmsg.includes(msg.text.toLowerCase())) {
+                bot.sendMessage(msg.chat.id, "*Hi, What's your name ?*", 
+                {   parse_mode: "MarkDown", 
+                    reply_to_message_id: msg.message_id, 
+                    reply_markup:{force_reply:true} 
+                });
+            }
+            if (msg.text.toLowerCase().includes(contactmsg)) {
+                bot.sendContact(msg.chat.id, contactnumber.number, contactnumber.firstname, { last_name: contactnumber.lastname })
+            }
+            if (clientname && msg.text.toLowerCase().includes(bye)) {
+                bot.sendMessage(msg.chat.id, `Have a nice day ${clientname}!`, { parse_mode: "Markdown", reply_to_message_id: msg.message_id });
+            }
+            else if (!clientname && msg.text.toLowerCase().includes(bye)) {
+                bot.sendMessage(msg.chat.id, `Have a nice day *${msg.from.first_name}!*`, { parse_mode: "Markdown", reply_to_message_id: msg.message_id });
+            }
+            else if (!clientmsg.includes(msg.text.toLowerCase())) {
+                bot.sendMessage(msg.chat.id, "*Hi, Say hello first*", { parse_mode: "MarkDown" });
+            }
+        }
+        else if (msg.reply_to_message.text.includes("Hi, What's your name ?")) {
+            clientname = msg.text
+            bot.sendMessage(msg.chat.id,
+                `  
+                Oh hello, *${clientname}!*  
+                Click /start to know what's up! 🙂
+                `,
+                { parse_mode: "Markdown", reply_to_message_id: msg.message_id });
+        }
+      
+    }
+});
 
 // Listener (handler) for telegram's /bookmark event
 bot.onText(/\/bookmark/, (msg, match) => {
@@ -31,7 +79,7 @@ bot.onText(/\/bookmark/, (msg, match) => {
     }
 
     URLs.push(url);
-    
+
     bot.sendMessage(
         chatId,
         'URL has been successfully saved!',
@@ -91,7 +139,7 @@ bot.on('callback_query', (callbackQuery) => {
     });
 
     tempSiteURL = '';
-    console.log(`Command is ${category.area}`+ category.area);
+    console.log(`Command is ${category.area}` + category.area);
     bot.sendMessage(message.chat.id, `URL has been labeled with category "${category.area}"`);
 });
 
@@ -99,7 +147,7 @@ bot.on('callback_query', (callbackQuery) => {
 bot.onText(/\/keyboard/, (msg) => {
     bot.sendMessage(msg.chat.id, 'Alternative keybaord layout', {
         'reply_markup': {
-            'keyboard': [['Sample text', 'Second sample'], ['Keyboard'], ['I\'m robot']],
+            //'keyboard': [['Sample text', 'Second sample'], ['Keyboard'], ['I\'m robot']],
             resize_keyboard: true,
             one_time_keyboard: true,
             force_reply: true,
@@ -107,23 +155,7 @@ bot.onText(/\/keyboard/, (msg) => {
     });
 });
 
-bot.on('message', (msg) => {
-    if(msg.text){
-        var clientmsg = ["hello","hi","heyy","hey",];
-        //console.log(msg);
-        if (clientmsg.includes(msg.text.toString().toLowerCase())) {
-            bot.sendMessage(msg.chat.id,"*Hi, What's your name*",{parse_mode:"MarkDown"});
-        };
-        var clientmsg = ["my phone contact"];
-        if (clientmsg.includes(msg.text.toString().toLowerCase())) {
-            bot.sendContact(msg.chat.id,"+234 80 2344 5901","Molly Sanders")
-        };
-        // if (!clientmsg.includes(msg.text.toString().toLowerCase())) {
-        //     bot.sendMessage(msg.chat.id,`Oh hello, ${msg.text.toString()}`);
-        //     console.log(msg);
-        // };   
-    }
-});
+
 
 // Inline keyboard options
 const inlineKeyboard = {
@@ -167,10 +199,10 @@ const requestPhoneKeyboard = {
 bot.on("polling_error", (err) => console.log(err));
 
 // Listener (handler) for retrieving phone number
- bot.onText(/\/phone/, (msg) => {
-     bot.sendMessage(msg.chat.id, 'Can we get access to your phone number?', requestPhoneKeyboard);
+bot.onText(/\/phone/, (msg) => {
+    bot.sendMessage(msg.chat.id, 'Can we get access to your phone number?', requestPhoneKeyboard);
 
- });
+});
 
 // Handler for phone number request when user gives permission
 bot.on('contact', async (msg) => {
@@ -186,13 +218,13 @@ bot.onText(/\/start/, (msg) => {
     bot.sendMessage(
         chatId,
         `
-            Welcome at <b>ArticleBot</b>, thank you for using my service
+            Welcome at <b>A Testing Bot</b>, thank you for using my service
       
             Available commands:
         
             /bookmark <b>URL</b> - save interesting article URL
         `, {
-            parse_mode: 'HTML',
-        }
+        parse_mode: 'HTML',
+    }
     );
 });
