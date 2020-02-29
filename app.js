@@ -62,7 +62,10 @@ bot.onText(/\/label/, (msg, match) => {
                 inline_keyboard: [[
                     {
                         text: 'Development',
-                        callback_data: 'development'
+                        callback_data: JSON.stringify({
+                            'command': 'label',
+                            'area': 'development'
+                        })
                     }, {
                         text: 'Lifestyle',
                         callback_data: 'lifestyle'
@@ -79,16 +82,17 @@ bot.onText(/\/label/, (msg, match) => {
 // Listener (handler) for callback data from /label command
 bot.on('callback_query', (callbackQuery) => {
     const message = callbackQuery.message;
-    const category = callbackQuery.data;
+
+    const category = JSON.parse(callbackQuery.data);
 
     URLLabels.push({
         url: tempSiteURL,
-        label: category,
+        label: category.area,
     });
 
     tempSiteURL = '';
-    console.log(message);
-    bot.sendMessage(message.chat.id, `URL has been labeled with category "${category}"`);
+    console.log(`Command is ${category.area}`+ category.area);
+    bot.sendMessage(message.chat.id, `URL has been labeled with category "${category.area}"`);
 });
 
 // Listener (handler) for showcasing different keyboard layout
@@ -104,10 +108,21 @@ bot.onText(/\/keyboard/, (msg) => {
 });
 
 bot.on('message', (msg) => {
-    var clientmsg = "second sample";
-    if (msg.text.toString().toLowerCase().indexOf(clientmsg) === 0) {
-    bot.sendMessage(msg.chat.id,"You chose "+ clientmsg);
-    };
+    if(msg.text){
+        var clientmsg = ["hello","hi","heyy","hey",];
+        //console.log(msg);
+        if (clientmsg.includes(msg.text.toString().toLowerCase())) {
+            bot.sendMessage(msg.chat.id,"*Hi, What's your name*",{parse_mode:"MarkDown"});
+        };
+        var clientmsg = ["my phone contact"];
+        if (clientmsg.includes(msg.text.toString().toLowerCase())) {
+            bot.sendContact(msg.chat.id,"+234 80 2344 5901","Molly Sanders")
+        };
+        // if (!clientmsg.includes(msg.text.toString().toLowerCase())) {
+        //     bot.sendMessage(msg.chat.id,`Oh hello, ${msg.text.toString()}`);
+        //     console.log(msg);
+        // };   
+    }
 });
 
 // Inline keyboard options
@@ -145,16 +160,17 @@ const requestPhoneKeyboard = {
         "one_time_keyboard": true,
         "keyboard": [[{
             text: "My phone number",
-            request_contact: true,
-            one_time_keyboard: true
+            request_contact: true
         }], ["Cancel"]]
     }
 };
+bot.on("polling_error", (err) => console.log(err));
 
 // Listener (handler) for retrieving phone number
-bot.onText(/\/phone/, (msg) => {
-    bot.sendMessage(msg.chat.id, 'Can we get access to your phone number?', requestPhoneKeyboard);
-});
+ bot.onText(/\/phone/, (msg) => {
+     bot.sendMessage(msg.chat.id, 'Can we get access to your phone number?', requestPhoneKeyboard);
+
+ });
 
 // Handler for phone number request when user gives permission
 bot.on('contact', async (msg) => {
