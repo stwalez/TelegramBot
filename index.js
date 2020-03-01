@@ -1,11 +1,13 @@
+
 // Dependencies
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const axios = require('axios');
 const bodyParser = require('body-parser');
 const port = 80;
 const url = 'https://api.telegram.org/bot';
-const apiToken = '1030271986:AAEVlVieyhuzJH2ICe-3ZQOtHRRtpBCzZOo';
+const apiToken = process.env.TOKEN;
 // Configurations
 app.use(bodyParser.json());
 // Endpoints

@@ -128,7 +128,7 @@ bot.onText(/\/label/, (msg, match) => {
 });
 
 // Listener (handler) for callback data from /label command
-bot.on('callback_query', (callbackQuery) => {
+/* bot.on('callback_query', (callbackQuery) => {
     const message = callbackQuery.message;
 
     const category = JSON.parse(callbackQuery.data);
@@ -142,7 +142,7 @@ bot.on('callback_query', (callbackQuery) => {
     console.log(`Command is ${category.area}` + category.area);
     bot.sendMessage(message.chat.id, `URL has been labeled with category "${category.area}"`);
 });
-
+ */
 // Listener (handler) for showcasing different keyboard layout
 bot.onText(/\/keyboard/, (msg) => {
     bot.sendMessage(msg.chat.id, 'Alternative keybaord layout', {
@@ -228,3 +228,42 @@ bot.onText(/\/start/, (msg) => {
     }
     );
 });
+
+
+// Matches /editable
+bot.onText(/\/editable/, function onEditableText(msg) {
+    console.log(msg)
+    const opts = {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            {
+              text: 'Edit Text',
+              // we shall check for this value when we listen
+              // for "callback_query"
+              callback_data: 'edit'
+            }
+          ]
+        ]
+      }
+    };
+    bot.sendMessage(msg.from.id, 'Original Text', opts);
+  });
+  
+  
+  // Handle callback queries
+  bot.on('callback_query', function onCallbackQuery(callbackQuery) {
+    const action = callbackQuery.data;
+    const msg = callbackQuery.message;
+    const opts = {
+      chat_id: msg.chat.id,
+      message_id: msg.message_id,
+    };
+    let text;
+  
+    if (action === 'edit') {
+      text = 'Edited Text';
+    }
+  
+    bot.editMessageText(text, opts);
+  });
