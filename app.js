@@ -257,7 +257,7 @@ bot.onText(/\/movie (.+)/, (msg, match) => {
             const response = await axios.get(`https://www.omdbapi.com/?apikey=${apikey}&t=${movie}`);
             console
             var res = response.data;
-            bot.sendPhoto(chatId,res.Poster,{caption:`Result:\nTitle: ${res.Title} \nYear: ${res.Year} \nRated: ${res.Rated} \nReleased: ${res.Released}`})
+            bot.sendPhoto(chatId,res.Poster,{caption:`Result:\nTitle: ${res.Title} \nYear: ${res.Year} \nRated: ${res.Rated} \nReleased: ${res.Released} \nPlot: ${res.Plot}`})
         } catch (error) {
             console.error(error);
         }
