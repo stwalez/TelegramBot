@@ -282,6 +282,13 @@ bot.onText(/\/editable/, function onEditableText(msg) {
 bot.onText(/\/movie (.+)/, (msg, match) => {
     var movie = match[1];
     var chatId = msg.chat.id;
+    if (movie === undefined) {
+        bot.sendMessage(
+            chatId,
+            'Please provide "Movie Name" after the movie command i.e. /movie Avengers!',
+        );
+        return;
+    }    
     bot.sendMessage(chatId, `Looking for the movie titled ${movie}...`);
     getMovie = async () => {
         try {
