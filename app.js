@@ -231,6 +231,7 @@ bot.onText(/\/start/, (msg) => {
             Available commands:
         
             /bookmark <b>URL</b> - save interesting article URL
+            /movie <b>Movie Name </b> - Get Movie Info
         `, {
         parse_mode: 'HTML',
     }
