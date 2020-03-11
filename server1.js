@@ -1,4 +1,3 @@
-
 // Dependencies
 require('dotenv').config();
 const express = require('express');
@@ -10,7 +9,6 @@ const url = 'https://api.telegram.org/bot';
 const apiToken = process.env.TOKEN;
 // Configurations
 app.use(bodyParser.json());
-// Endpoints
 // Endpoints
 app.post('/', (req, res) => {
     // console.log(req.body);

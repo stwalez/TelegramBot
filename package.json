@@ -4,8 +4,8 @@
   "description": "A Telegram Bot",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "test": "node app.js",
+    "start": "node app.js"
   },
   "keywords": [
     "bot",
@@ -21,6 +21,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "node-telegram-bot-api": "^0.40.0",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "now": "^17.0.4"
   }
 }

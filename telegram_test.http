@@ -3,6 +3,9 @@
 GET https://api.telegram.org/bot{{token}}/getMe
 
 ###
+GET https://api.telegram.org/bot{{token}}/getWebhookinfo
+
+###
 #ngrok test url
 POST https://api.telegram.org/bot{{token}}/setwebhook 
 content-type: application/json

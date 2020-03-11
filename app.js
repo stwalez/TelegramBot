@@ -1,12 +1,21 @@
 require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
-
-const token = process.env.TOKEN;
+const axios = require('axios');
+const token = "1030271986:AAEVlVieyhuzJH2ICe-3ZQOtHRRtpBCzZOo";
 
 // Created instance of TelegramBot
 const bot = new TelegramBot(token, {
-    polling: true
+    //polling: true
+    webHook: {
+        port: process.env.PORT
+      }
 });
+
+//Create an environment variable for Heroku app
+const url = process.env.APP_URL //|| 'https://<app-name>.herokuapp.com:443';
+
+//Set WebHook 
+bot.setWebHook(`${url}/bot${token}`);
 
 // In-memory storage
 const URLs = [];
@@ -17,14 +26,13 @@ const contactnumber = {
     lastname: "Sanders",
     number: "+234 701 122 3344"
 }
-let clientname = '';
 
 // Listener (handler) for Greetings
 bot.on('message', (msg) => {
+    let clientname = '';
     let clientmsg = ["hello", "hi", "heyy", "hey",];
     let contactmsg = ["my phone contact"];
     let bye = "bye";
-    //console.log(msg);
     if (!msg.text.charAt(0).includes("/")) {
         if (!msg.reply_to_message || !msg.reply_to_message.text.includes("Hi, What's your name")) {
             
@@ -84,8 +92,8 @@ bot.onText(/\/bookmark/, (msg, match) => {
         chatId,
         'URL has been successfully saved!',
     );
-    console.log(URLs);
-    console.log(msg);
+    //console.log(URLs);
+    //console.log(msg);
 });
 
 // Listener (handler) for telegram's /label event
@@ -267,3 +275,22 @@ bot.onText(/\/editable/, function onEditableText(msg) {
   
     bot.editMessageText(text, opts);
   });
+
+
+  // Including a Movie API 
+bot.onText(/\/movie (.+)/, (msg, match) => {
+    var movie = match[1];
+    var chatId = msg.chat.id;
+    bot.sendMessage(chatId, `Looking for the movie titled ${movie}...`);
+    getMovie = async () => {
+        try {
+            const response = await axios.get(`https://www.omdbapi.com/?apikey=d0a863d8&t=${movie}`);
+            console
+            var res = response.data;
+            bot.sendPhoto(chatId,res.Poster,{caption:`Result:\nTitle: ${res.Title} \nYear: ${res.Year} \nRated: ${res.Rated} \nReleased: ${res.Released}`})
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    getMovie();
+});
