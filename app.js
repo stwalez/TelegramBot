@@ -27,9 +27,9 @@ const contactnumber = {
     number: "+234 701 122 3344"
 }
 
+let clientname = '';
 // Listener (handler) for Greetings
-bot.on('message', (msg) => {
-    let clientname = '';
+bot.on('message', (msg) => {  
     let clientmsg = ["hello", "hi", "heyy", "hey",];
     let contactmsg = ["my phone contact"];
     let bye = "bye";
