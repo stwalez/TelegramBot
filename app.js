@@ -232,6 +232,7 @@ bot.onText(/\/start/, (msg) => {
         
             /bookmark <b>URL</b> - save interesting article URL
             /movie <b>Movie Name </b> - Get Movie Info
+            /phone - Access your phone number
         `, {
         parse_mode: 'HTML',
     }
