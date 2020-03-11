@@ -1,7 +1,8 @@
 require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
 const axios = require('axios');
-const token = "1030271986:AAEVlVieyhuzJH2ICe-3ZQOtHRRtpBCzZOo";
+const token = process.env.TOKEN;
+const apikey = process.env.API_KEY;
 
 // Created instance of TelegramBot
 const bot = new TelegramBot(token, {
@@ -253,7 +254,7 @@ bot.onText(/\/movie (.+)/, (msg, match) => {
     bot.sendMessage(chatId, `Looking for the movie titled ${movie}...`);
     getMovie = async () => {
         try {
-            const response = await axios.get(`https://www.omdbapi.com/?apikey=d0a863d8&t=${movie}`);
+            const response = await axios.get(`https://www.omdbapi.com/?apikey=${apikey}&t=${movie}`);
             console
             var res = response.data;
             bot.sendPhoto(chatId,res.Poster,{caption:`Result:\nTitle: ${res.Title} \nYear: ${res.Year} \nRated: ${res.Rated} \nReleased: ${res.Released}`})
