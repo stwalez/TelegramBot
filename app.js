@@ -349,7 +349,7 @@ bot.onText(/\/Poll (.+)/, (msg, match) => {
             {
                 is_anonymous: "true",
                 type:"quiz",
-                correct_option_id: "1"
+                correct_option_id: "0"
             });
             break;
         case 4:
@@ -360,7 +360,7 @@ bot.onText(/\/Poll (.+)/, (msg, match) => {
             {
                 is_anonymous: "false",
                 type:"quiz",
-                correct_option_id: "1"
+                correct_option_id: "0"
             });
             break;
         case 5:
