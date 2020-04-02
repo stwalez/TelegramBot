@@ -5,7 +5,6 @@ const token = process.env.TOKEN;
 const apikey = process.env.apikey;
 const devmode = true;
 
-
 // Select Development or Production Mode
 const mode = {
     devmode : {
@@ -17,24 +16,10 @@ const mode = {
         }
     }
 }
+//Select Deployment Mode
 const TelegramMode = mode.prodmode
 
-// if(devmode){
-//     const bot = new TelegramBot(token, {
-//         polling: true
-//     });  
-// } else {
-//     const bot = new TelegramBot(token, {
-//          webHook: {
-//              port: process.env.PORT
-//          }
-//     });
-//     //Create an environment variable for Heroku app
-//     const url = process.env.APP_URL //|| 'https://<app-name>.herokuapp.com:443';
-//     //Set WebHook 
-//     bot.setWebHook(`${url}/bot${token}`);
-// }
-
+//Create TelegramBot Instance
 const bot = new TelegramBot(token, TelegramMode);
 
 //Create an environment variable for Heroku app
